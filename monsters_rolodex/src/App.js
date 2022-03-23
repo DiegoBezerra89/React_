@@ -1,5 +1,7 @@
 import { Component } from "react";
 import "./App.css";
+import CardList from "./components/card-list/card-list.component";
+import SearchField from "./components/search-field/search-field.component";
 
 class App extends Component {
   constructor() {
@@ -13,6 +15,15 @@ class App extends Component {
     console.log("1"); //O construtor é chamado, para criar o componente e setar o seu estado inicial []
   }
 
+  onSearchChange = (event) => {
+    const searchField = event.target.value.toLowerCase();
+    this.setState(() => {
+      return {
+        searchField,
+      };
+    });
+  };
+
   componentDidMount() {
     console.log("3"); // o React sabe que o componente foi montado, com estado inicial []
     fetch("https://jsonplaceholder.typicode.com/users") // faz-se uma requisição
@@ -25,34 +36,37 @@ class App extends Component {
   }
 
   render() {
+    //Sempre que o React quer atualizar a DOM ele roda o render method
     console.log("2"); //O componente é renderizado, seu estado inicial é [], logo não irá aparecer nada
 
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      return monster.name.toLowerCase().includes(this.state.searchField);
+    //refatoração para que não seja necessário utilizar o this a todo momento de chamada de variáveis
+    const { monsters, searchField } = this.state;
+    const { onSearchChange } = this;
+
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField);
     });
 
     return (
       <div className="App">
-        <input
+        <SearchField onSearchChange={onSearchChange} />
+        {/* <input
           className="search-box"
           type="search"
           placeholder="search monsters"
-          onChange={(event) => {
-            const searchField = event.target.value.toLowerCase();
-            this.setState(() => {
-              return {
-                searchField,
-              };
-            });
-          }}
-        />
-        {filteredMonsters.map((item) => {
+          onChange={onSearchChange}
+        /> */}
+        {/**
+         * refatoração para componente
+         */}
+        {/* {filteredMonsters.map((item) => {
           return (
             <div key={item.id}>
               <h1>{item.name}</h1>
             </div>
           );
-        })}
+        })} */}
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
