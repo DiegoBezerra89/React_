@@ -8,28 +8,45 @@ class App extends Component {
     this.state = {
       //it's always a json object
       monsters: [],
+      searchField: "",
     };
+    console.log("1"); //O construtor é chamado, para criar o componente e setar o seu estado inicial []
   }
 
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
+    console.log("3"); // o React sabe que o componente foi montado, com estado inicial []
+    fetch("https://jsonplaceholder.typicode.com/users") // faz-se uma requisição
+      .then((response) => response.json()) //transforma a resposta em json
       .then((users) =>
-        this.setState(
-          () => {
-            return { monsters: users };
-          },
-          () => {
-            console.log(this.state);
-          }
-        )
+        this.setState(() => {
+          return { monsters: users }; //seta o estado que antes era [], para {monsters: [{},{}]}
+        })
       );
   }
 
   render() {
+    console.log("2"); //O componente é renderizado, seu estado inicial é [], logo não irá aparecer nada
+
+    const filteredMonsters = this.state.monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(this.state.searchField);
+    });
+
     return (
       <div className="App">
-        {this.state.monsters.map((item) => {
+        <input
+          className="search-box"
+          type="search"
+          placeholder="search monsters"
+          onChange={(event) => {
+            const searchField = event.target.value.toLowerCase();
+            this.setState(() => {
+              return {
+                searchField,
+              };
+            });
+          }}
+        />
+        {filteredMonsters.map((item) => {
           return (
             <div key={item.id}>
               <h1>{item.name}</h1>
@@ -42,7 +59,6 @@ class App extends Component {
 }
 
 export default App;
-
 
 // PROMISES
 
@@ -68,27 +84,36 @@ export default App;
 
 //ASYNC / AWAIT
 
-const myAsyncFunction = async () => {
-	try {
-		const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
-		console.log("userResponse", userResponse);
-		
-		const users = await userResponse.json();
-		console.log("users", users);
-		
-		const secondUser = users[1];
-		console.log(secondUser);
-		
-		const postResponse = await fetch('https://jsonplaceholder.typicode.com/posts?userId='+secondUser.id);
-		
-		const posts = await postResponse.json();
-		console.log("Posts", posts);
-		return posts
-	} catch(err) {
-		console.log(err);
-	}
-}
+// const myAsyncFunction = async () => {
+//   try {
+//     const userResponse = await fetch(
+//       "https://jsonplaceholder.typicode.com/users"
+//     );
+//     console.log("userResponse", userResponse);
 
-const posts = async () => myAsyncFunction().then((item) => item);
+//     const users = await userResponse.json();
+//     console.log("users", users);
 
-console.log("return ", posts);
+//     const secondUser = users[1];
+//     console.log(secondUser);
+
+//     const postResponse = await fetch(
+//       "https://jsonplaceholder.typicode.com/posts?userId=" + secondUser.id
+//     );
+
+//     const posts = await postResponse.json();
+//     return posts;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+// const posts = myAsyncFunction().then((item) => item);
+
+// console.log("return ", posts);
+
+// MODIFICANDO O ESTADO
+
+/**
+ * Se vc for modificar o estado da aplicação, e de alguma maneira vc quiser ter acesso ao estado completo, com todos os dados, vc precisa criar uma cópia dele, e modificar a cópia, nunca o estado em si.
+ */
