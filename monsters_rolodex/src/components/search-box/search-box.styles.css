@@ -1,0 +1,12 @@
+/* 
+  Css em React, da maneira que está feito, não há encapsulamento de classe no componente, qualquer classe, colocada em qualquer lugar, funcionará para a plicação inteira. Tenha cuidado!
+*/
+.search-box {
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  padding: 10px;
+  width: 150px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}

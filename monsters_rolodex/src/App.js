@@ -1,7 +1,7 @@
 import { Component } from "react";
 import "./App.css";
 import CardList from "./components/card-list/card-list.component";
-import SearchField from "./components/search-field/search-field.component";
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
   constructor() {
@@ -49,24 +49,13 @@ class App extends Component {
 
     return (
       <div className="App">
-        <SearchField onSearchChange={onSearchChange} />
-        {/* <input
+        <SearchBox
+          onChangeHandler={onSearchChange}
+          searchPlaceholder="Search monsters"
           className="search-box"
-          type="search"
-          placeholder="search monsters"
-          onChange={onSearchChange}
-        /> */}
-        {/**
-         * refatoração para componente
-         */}
-        {/* {filteredMonsters.map((item) => {
-          return (
-            <div key={item.id}>
-              <h1>{item.name}</h1>
-            </div>
-          );
-        })} */}
-        <CardList monsters={filteredMonsters} />
+          inputType="search"
+        />
+        <CardList className="card-list" monsters={filteredMonsters} />
       </div>
     );
   }
@@ -130,4 +119,12 @@ export default App;
 
 /**
  * Se vc for modificar o estado da aplicação, e de alguma maneira vc quiser ter acesso ao estado completo, com todos os dados, vc precisa criar uma cópia dele, e modificar a cópia, nunca o estado em si.
+ */
+
+//RE Render
+/**
+ * O Componente irá re renderizar em duas situações:
+ * -> Quando o setState for chamado.
+ * -> Sempre que uma prop mudar.
+ *
  */
