@@ -55,7 +55,7 @@ class App extends Component {
           className="search-box"
           inputType="search"
         />
-        <CardList className="card-list" monsters={filteredMonsters} />
+        <CardList className="card" monsters={filteredMonsters} />
       </div>
     );
   }
