@@ -8,6 +8,7 @@ class App extends Component {
     super();
 
     this.state = {
+      //initial state
       //it's always a json object
       monsters: [],
       searchField: "",
@@ -19,7 +20,7 @@ class App extends Component {
     const searchField = event.target.value.toLowerCase();
     this.setState(() => {
       return {
-        searchField,
+        searchField, //searchField: searchField
       };
     });
   };
@@ -42,13 +43,13 @@ class App extends Component {
     //refatoração para que não seja necessário utilizar o this a todo momento de chamada de variáveis
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
-
     const filteredMonsters = monsters.filter((monster) => {
       return monster.name.toLowerCase().includes(searchField);
     });
 
     return (
       <div className="App">
+        <h1 className="app-title">Monsters Rolodex</h1>
         <SearchBox
           onChangeHandler={onSearchChange}
           searchPlaceholder="Search monsters"

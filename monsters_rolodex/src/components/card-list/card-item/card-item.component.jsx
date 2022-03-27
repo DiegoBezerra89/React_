@@ -2,8 +2,8 @@ import { Component } from "react";
 
 class CardItem extends Component {
   render() {
-    const { monster, className } = this.props;
-    const { name, email, id } = monster;
+    const { className } = this.props;
+    const { name, email, id } = this.props.monster;
     return (
       <div className={`${className}-container`} key={id}>
         <img
