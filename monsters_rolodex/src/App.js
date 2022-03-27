@@ -4,7 +4,7 @@ import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
 
 const App = () => {
-  const [monsters, setMonsters] = useState([]);
+  const [monsters, setMonsters] = useState([]); //O HOOK USESTATE SETA O ESTADO FORA DO COMPONENTE FUNCIONAL E GUARDA
   const [searchField, setSearchField] = useState("");
 
   useEffect(() => {
@@ -13,11 +13,11 @@ const App = () => {
       .then(
         (users) => setMonsters(users) //seta o estado que antes era [], para {monsters: [{},{}]}
       );
-  }, []);
+  }, []); //AO SETAR O ARRAY USERS EM MONSTERS VC SETA UM VALOR EXTERNO, O QUE FAZ COM QUE O USESTATE GUARDE NA MEMÓRIA E FAÇA A COMPARAÇÃO COM O OUTRO ARRAY ARMAZENADO NO ESTADO, AGORA OS ARRAYS SÃO DIFERENTES, POIS ELES POSSUEM ENDEREÇOS DE MEMÓRIA DIFERENTES, O QUE GERA A SUBSTITUIÇÃO DELES, O QUE POR CONSEQUÊNCIA FAZ COM QUE O COMPONENTE SEJA RENDERIZADO NOVAMENTE, GERANDO UM LOOP INFINITO CASO O PARAMETRO DE EFEITO NÃO SEJA PASSADO
 
   const onSearchChange = (event) => {
-    const searchField = event.target.value.toLowerCase();
-    setSearchField(searchField); //searchField: searchField
+    const searchFieldString = event.target.value.toLowerCase();
+    setSearchField(searchFieldString); //searchField: searchField
   };
 
   const filteredMonsters = monsters.filter((monster) => {
@@ -38,6 +38,7 @@ const App = () => {
   );
 };
 
+export default App;
 // class App extends Component {
 //   constructor() {
 //     super();
@@ -96,8 +97,6 @@ const App = () => {
 //     );
 //   }
 // }
-
-export default App;
 
 // PROMISES
 
@@ -189,54 +188,76 @@ export default App;
 
 // Ao contrário dos componentes baseados em classes, os funcionais ao invés de possuírem ciclo de vida, eles possuem side effects, os chamados HOOKS.
 
-//FUNÇÕES PURAS X FUNÇÕES IMPURAS
+// //FUNÇÕES PURAS X FUNÇÕES IMPURAS
 
-//FUNÇÃO PURA
-//Uma função pura, retorna sempre o que é esperado, não importa quantas vezes tenha sido invocada, quando lhe é dada os mesmos argumentos.
+// //FUNÇÃO PURA
+// //Uma função pura, retorna sempre o que é esperado, não importa quantas vezes tenha sido invocada, quando lhe é dada os mesmos argumentos.
 
-const somaPura = (a, b) => a + b;
-console.log(somaPura(4, 5)); //9
-console.log(somaPura(4, 5)); //9
-console.log(somaPura(4, 5)); //9
-console.log(somaPura(4, 5)); //9
-console.log(somaPura(4, 5)); //9
+// const somaPura = (a, b) => a + b;
+// console.log(somaPura(4, 5)); //9
+// console.log(somaPura(4, 5)); //9
+// console.log(somaPura(4, 5)); //9
+// console.log(somaPura(4, 5)); //9
+// console.log(somaPura(4, 5)); //9
 
-//FUNÇÃO IMPURA
-//Uma função impura, pode sofrer alterações dependendo do contexto, mesmo se os argumentos nunca mudarem.
+// //FUNÇÃO IMPURA
+// //Uma função impura, pode sofrer alterações dependendo do contexto, mesmo se os argumentos nunca mudarem.
 
-let c = 5;
-const somaImpura = (a, b) => a + b + c;
-console.log(somaImpura(4, 5)); //14
-console.log(somaImpura(4, 5)); //14
-console.log(somaImpura(4, 5)); //14
-console.log(somaImpura(4, 5)); //14
+// let c = 5;
+// const somaImpura = (a, b) => a + b + c;
+// console.log(somaImpura(4, 5)); //14
+// console.log(somaImpura(4, 5)); //14
+// console.log(somaImpura(4, 5)); //14
+// console.log(somaImpura(4, 5)); //14
 
-//note que existe uma outra variável na função, 'c', que não está sendo manipulada pela função, é externa a ela, logo se 'c' mudar de valor, a função também muda seu retorno, independente de serem passados os mesmos parâmetros
-c = 3;
-console.log(somaImpura(4, 5)); //12
-console.log(somaImpura(4, 5)); //12
-console.log(somaImpura(4, 5)); //12
+// //note que existe uma outra variável na função, 'c', que não está sendo manipulada pela função, é externa a ela, logo se 'c' mudar de valor, a função também muda seu retorno, independente de serem passados os mesmos parâmetros
+// c = 3;
+// console.log(somaImpura(4, 5)); //12
+// console.log(somaImpura(4, 5)); //12
+// console.log(somaImpura(4, 5)); //12
 
-c = 1;
-console.log(somaImpura(4, 5)); //10
-console.log(somaImpura(4, 5)); //10
-console.log(somaImpura(4, 5)); //10
+// c = 1;
+// console.log(somaImpura(4, 5)); //10
+// console.log(somaImpura(4, 5)); //10
+// console.log(somaImpura(4, 5)); //10
 
-//outra coisa que faz a sua função deixar de ser pura, é produzir side effects
-c = 0;
-const somaComSideEffects = (a, b) => {
-  //a função está mudando o valor de c, e a função não recebe c como argumento, ela tem acesso a 'c' e o modifica, gerando um side effect
-  c = a + b;
-  return a + b;
-};
-somaComSideEffects(4, 5);
-console.log(somaComSideEffects(4, 5)); //9
-console.log(somaComSideEffects(4, 5)); //9
-console.log(somaComSideEffects(4, 5)); //9
-console.log(somaComSideEffects(4, 5)); //9
+// //outra coisa que faz a sua função deixar de ser pura, é produzir side effects
+// c = 0;
+// const somaComSideEffects = (a, b) => {
+//   //a função está mudando o valor de c, e a função não recebe c como argumento, ela tem acesso a 'c' e o modifica, gerando um side effect
+//   c = a + b;
+//   return a + b;
+// };
+// somaComSideEffects(4, 5);
+// console.log(somaComSideEffects(4, 5)); //9
+// console.log(somaComSideEffects(4, 5)); //9
+// console.log(somaComSideEffects(4, 5)); //9
+// console.log(somaComSideEffects(4, 5)); //9
 
-console.log("Valor de C", c); //9
+// console.log("Valor de C", c); //9
 
-//O valor de 'c' era zero '0', agora é nove '9'
+// //O valor de 'c' era zero '0', agora é nove '9'
 
-//EM REACT, TRABALHAREMOS COM FUNÇÕES IMPURAS! HOOKS, SÃO FUNÇÕES IMPURAS QUE MODIFICAM ALGO EXTERNO A ELAS
+// //EM REACT, TRABALHAREMOS COM FUNÇÕES IMPURAS! HOOKS, SÃO FUNÇÕES IMPURAS QUE MODIFICAM ALGO EXTERNO A ELAS
+
+// USESTATE HOOK
+
+// const [] = useState(); //[value, setValue]
+//useState nos retorna um array com dois valores, o primeiro é um valor que queremos armazenar em nosso estado do app, e o segundo parametro é uma função que seta o valor, e o atualiza.
+//ao contrário dos componentes de classe, o useState não manipula um objeto de estados, como no setState, mas sim um valor único, cada useState / setState, manipula um valor, que pode ser um objeto, para manipular vários, é necessário um setState para cada estado
+//No useState, o estado não é mais um objeto, e sim um valor!
+
+//RENDER E RE RENDER DE COMPONENTES FUNCIONAIS
+//Todas as vezes que um componente funcional eh re renderizado, ele roda toda a funçõa novamente, do topo ao chão
+//Sempre que um prop for modificada, o componente re renderiza.
+//Sempre que um estado é modificado, o componente re renderiza.
+
+//LEMBRE-SE: um componente funcional sempre roda do começo ao fim, a cada renderização, não há métodos setados, valores guardados, etc.
+//ele roda a função inteira, de cima a baixo.
+
+//##########
+// ATENÇÃO!
+//##########
+//USE UM ESTADO DENTRO DE UM COMPONENTE QUANDO VC QUISER QUE ELE SEJA RE RENDERIZADO DE ALGUMA MANEIRA EM ALGUM MOMENTO!
+
+//EM UM COMPONENTE FUNCIONAL, NÃO HÁ LIFE CICLE, VC DEVE SE PREOCUPAR EM DIZER QUANDO VC QUER QUE O COMPONENTE SEJA RE RENDERIZADO, E POR CONSEQUÊNCIA RODAR A FUNÇÃO INTEIRA NOVAMENTE!
