@@ -6,6 +6,7 @@ import SearchBox from "./components/search-box/search-box.component";
 const App = () => {
   const [monsters, setMonsters] = useState([]); //O HOOK USESTATE SETA O ESTADO FORA DO COMPONENTE FUNCIONAL E GUARDA
   const [searchField, setSearchField] = useState("");
+  const [filteredMonsters, setFilteredMonsters] = useState(monsters);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users") // faz-se uma requisição
@@ -14,15 +15,21 @@ const App = () => {
         (users) => setMonsters(users) //seta o estado que antes era [], para {monsters: [{},{}]}
       );
   }, []); //AO SETAR O ARRAY USERS EM MONSTERS VC SETA UM VALOR EXTERNO, O QUE FAZ COM QUE O USESTATE GUARDE NA MEMÓRIA E FAÇA A COMPARAÇÃO COM O OUTRO ARRAY ARMAZENADO NO ESTADO, AGORA OS ARRAYS SÃO DIFERENTES, POIS ELES POSSUEM ENDEREÇOS DE MEMÓRIA DIFERENTES, O QUE GERA A SUBSTITUIÇÃO DELES, O QUE POR CONSEQUÊNCIA FAZ COM QUE O COMPONENTE SEJA RENDERIZADO NOVAMENTE, GERANDO UM LOOP INFINITO CASO O PARAMETRO DE EFEITO NÃO SEJA PASSADO
+  useEffect(() => {
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField);
+    });
+    setFilteredMonsters(filteredMonsters);
+  }, [monsters, searchField]);
 
   const onSearchChange = (event) => {
     const searchFieldString = event.target.value.toLowerCase();
     setSearchField(searchFieldString); //searchField: searchField
   };
 
-  const filteredMonsters = monsters.filter((monster) => {
-    return monster.name.toLowerCase().includes(searchField);
-  });
+  // const filteredMonsters = monsters.filter((monster) => {
+  //   return monster.name.toLowerCase().includes(searchField);
+  // });
 
   return (
     <div className="App">
@@ -261,3 +268,20 @@ export default App;
 //USE UM ESTADO DENTRO DE UM COMPONENTE QUANDO VC QUISER QUE ELE SEJA RE RENDERIZADO DE ALGUMA MANEIRA EM ALGUM MOMENTO!
 
 //EM UM COMPONENTE FUNCIONAL, NÃO HÁ LIFE CICLE, VC DEVE SE PREOCUPAR EM DIZER QUANDO VC QUER QUE O COMPONENTE SEJA RE RENDERIZADO, E POR CONSEQUÊNCIA RODAR A FUNÇÃO INTEIRA NOVAMENTE!
+
+//SIDE EFFECTS HOOKS
+
+//useEffect
+
+// um side effect é algum comportamento que queremos acionar de dentro da função, que modifica algo que existe fora da função (FUNÇÕES IMPURAS)
+// tem dois argumentos:
+
+// useEffect(() => {
+//   //o callback é a ação, ou o efeito que queremos realizar no estado da aplicação
+//   //o array são os argumentos que o useEffect monitora, assim que os mesmos mudarem de valor, o useEffect é acionado
+//   fetch("https://jsonplaceholder.typicode.com/users") // faz-se uma requisição
+//     .then((response) => response.json()) //transforma a resposta em json
+//     .then(
+//       (users) => setMonsters(users) //seta o estado que antes era [], para {monsters: [{},{}]}
+//     );
+// }, []); //o parametro array vazio, significa que o useEffect será acionado apenas na primeira renderização do componente.(Componentes funcionais são chamados como funções, rodando pelo menos uma vez.)

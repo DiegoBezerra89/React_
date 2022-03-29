@@ -1,8 +1,7 @@
 // import { Component } from "react";
 
-const CardItem = ({ ...props }) => {
-  const { className } = props;
-  const { name, email, id } = props.monster;
+const CardItem = ({ className, monster }) => {
+  const { name, email, id } = monster;
   return (
     <div className={`${className}-container`}>
       <img
@@ -15,6 +14,7 @@ const CardItem = ({ ...props }) => {
   );
 };
 
+export default CardItem;
 // class CardItem extends Component {
 //   render() {
 //     const { className } = this.props;
@@ -31,5 +31,3 @@ const CardItem = ({ ...props }) => {
 //     );
 //   }
 // }
-
-export default CardItem;

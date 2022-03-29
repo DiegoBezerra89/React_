@@ -2,8 +2,7 @@
 import CardItem from "./card-item/card-item.component";
 import "./card-list.styles.css";
 
-const CardList = ({ ...props }) => {
-  const { monsters, className } = props;
+const CardList = ({ monsters, className }) => {
   return (
     <>
       <div className={`${className}-list`}>
@@ -17,6 +16,7 @@ const CardList = ({ ...props }) => {
   );
 };
 
+export default CardList;
 // class CardList extends Component {
 //   render() {
 //     const { monsters, className } = this.props;
@@ -33,5 +33,3 @@ const CardList = ({ ...props }) => {
 //     );
 //   }
 // }
-
-export default CardList;
