@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { unmountComponentAtNode } from "react-dom";
 import "./App.css";
 import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
@@ -285,3 +286,29 @@ export default App;
 //       (users) => setMonsters(users) //seta o estado que antes era [], para {monsters: [{},{}]}
 //     );
 // }, []); //o parametro array vazio, significa que o useEffect será acionado apenas na primeira renderização do componente.(Componentes funcionais são chamados como funções, rodando pelo menos uma vez.)
+
+//DOM E VIRTUAL DOM
+
+//DOM
+//A árvore do DOM é feita de nós, acessíveis e possivelmente modificáveis
+//Ao utilizar o js vanilla para fazer modificações nessa árvore, você gasta recurso computacionais, as operações de modificação desta árvore são custosas
+
+//VIRTUAL DOM
+
+//O React cria o VIRTUAL DOM SNAPSHOT, que espelha a árvore do DOM real, porém ele não é HTML, ele é Javascript, o js é muito mais rápido para criar e refletir essas mudanças.
+//É UMA REPRESENTAÇÃO EM JS DA ÁRVORE DO DOM REAL.
+//O React utiliza essa primeira cópia como um snapshot do Dom Real, esta é a última barreira que o React tem para saber se foram feitas mudanças no DOM, sem ter que acessá-lo.
+//Então, cria mais uma cópia, VIRTUAL DOM COPY, aqui sim o React faz as mudanças nos elementos do que representam o DOM real.
+
+// O virtual dom getComputedStyle, recebe a informação de que foi criado um estado, e que esse estado está sendo passado para algum componente, este seu filho, no caso da nossa aplicação:
+
+// App
+// -> h1
+// -> SearchBox
+// -> CardList
+
+// Ele percebe que o componente SearchBox teve uma de suas props modificada, faz a sua função, e percebe que mais um estado do componente cardList foi modificado, faz sua função e retira do DOM os monstros que não possuem as letras inseridas no estado do SearchBox.
+
+// Compara o Dom que ele possui nesse momento , depois de todas modificações em sua árvore virtual, e se compara com o Virtual DOM Snapshot, pois o mesmo reflete o DOM real, as partes que não condizem com o DOM Real, são retiradas do DOM real.
+
+// O DOM real entra no novo fluxo e terá a forma que precisa ter.
